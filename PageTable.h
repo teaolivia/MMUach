@@ -1,10 +1,17 @@
 //PageTable.h
+#ifndef _PageTable_H
+#define _PageTable_H
 
-typedef struct {
-int Valid; // apakah page terdapat pada memori fisik
-int Frame; // indeks frame page di memori fisik
-int Dirty; // apakah page tersebut telah ditulis
-int Requested;
-} page_table_entry;
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef page_table_entry* page_table_pointer;
+typedef struct page_table {
+	int Valid; // apakah page terdapat pada physical memory
+	int Frame; // indeks frame page di physical memory
+	int Dirty; // apakah page tersebut telah ditulis
+	int Requested; // != 0 jika tidak ada pada physical memory dan dipesan oleh MMU (Process ID)
+} page_table_entry;
+
+typedef page_table_entry* page_table_pointer;
+
+#endif
