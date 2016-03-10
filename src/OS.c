@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 #include "PageTable.h"
 
-void chooseVictim()){
+void chooseVictim(){
 	//
 	//
 	// ALGORITHM START HERE
