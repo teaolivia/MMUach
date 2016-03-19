@@ -12,12 +12,6 @@
 #include <sys/stat.h>
 #include "PageTable.h"
 
-void chooseVictim(){
-	//
-	//
-	// ALGORITHM START HERE
-}
-
 int shmid, OSID, frame, page, MMid, disk, reqpage, finished;
 page_table_pointer pagetable;
 
@@ -136,5 +130,9 @@ int main(int argc,char *argv[]){
 	while(finished==0){
 		
 	}
+	
+	//detach
+	printf("Shared memory destroyed\n");
+	shmctl(shmid,IPC_RMID,NULL);
 	return 0;
 }
