@@ -5,6 +5,7 @@
 #include <signal.h>
 #include <ctype.h>
 #include <errno.h>
+#include <time.h>
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -34,6 +35,7 @@ void init(int p){
 		pagetable[i].Frame = -1;
 		pagetable[i].Dirty = 0;
 		pagetable[i].Requested = 0;
+		pagetable[i].LastUsed = 0;
 	}
 }
 
@@ -41,6 +43,7 @@ void continueExec(){
 	MMid = 0;
 	//scan pada page table untuk menemukan field Requested
 	int i=0;
+	int mini;
 	while(i<page){
 		if(pagetable[i].Requested!=0){
 			MMid = pagetable[i].Requested;
@@ -74,11 +77,16 @@ void continueExec(){
 			//frame is full, swap
 			
 			
-			//Search Frame
-			int i=0;
-			while(pagetable[i].Frame==-1){
-				i++;
+			//Search Frame (LRU)
+			mini = 0;
+			i = 1;
+			while( i < page ){
+				if( pagetable[mini].LastUsed > pagetable[i].LastUsed )
+					mini = i;
 			}
+			
+			// victim choosen
+			i = mini;
 			printf("Chose a victim page %d\n",i);
 			
 			
@@ -93,6 +101,7 @@ void continueExec(){
 			pagetable[reqpage].Frame = pagetable[i].Frame;
 			pagetable[reqpage].Valid = 1;
 			pagetable[reqpage].Requested = 0;
+			pagetable[reqpage].LastUsed = time(NULL);
 			
 			pagetable[i].Valid = 0;
 			pagetable[i].Frame = -1;
@@ -107,6 +116,7 @@ void continueExec(){
 			pagetable[reqpage].Frame = count;
 			pagetable[reqpage].Valid = 1;
 			pagetable[reqpage].Requested = 0;
+			pagetable[reqpage].LastUsed = time(NULL);
 			printf("Put in free frame %d\n",count);
 			printf("Unblock MMU\n");
 			disk++;
