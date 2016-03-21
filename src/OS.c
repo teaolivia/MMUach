@@ -78,13 +78,21 @@ void continueExec(){
 			
 			
 			//Search Frame (LRU)
-			mini = 0;
+			for( i = 0; i < page; ++ i){
+				if( pagetable[i].Frame != -1 )
+				{
+					mini = i;
+					break;
+				}
+			}
+
 			i = 1;
 			while( i < page ){
-				if( pagetable[mini].LastUsed > pagetable[i].LastUsed )
+				if( pagetable[i].Frame != -1 && pagetable[mini].LastUsed > pagetable[i].LastUsed )
 					mini = i;
+				++i;
 			}
-			
+
 			// victim choosen
 			i = mini;
 			printf("Chose a victim page %d\n",i);
