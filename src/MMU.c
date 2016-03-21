@@ -44,7 +44,7 @@ int main(int argc,char *argv[]) {
     if (argc < 2 ||
 (OSPID = SharedMemoryKey = atoi(argv[argc-1])) == 0  ||
 (NumberOfPages = atoi(argv[1])) == 0) {
-        printf("Usage:");
+        printf("Usage: MMU <page> <frame>\n");
         exit(EXIT_FAILURE);
     }
 
@@ -52,7 +52,7 @@ int main(int argc,char *argv[]) {
     if ((SegmentID = shmget(SharedMemoryKey,
 NumberOfPages*sizeof(page_table_entry),0)) == -1 ||
 (PageTable = (page_table_pointer)shmat(SegmentID,NULL,0)) == NULL) {
-        perror("ERROR: Could not get page table");
+        perror("ERROR: Could not get page table\n");
         exit(EXIT_FAILURE);
     }
 
